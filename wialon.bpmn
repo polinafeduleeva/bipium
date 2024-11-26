@@ -1,0 +1,1477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_0fjrq1j" name="Начало процесса">
+      <bpmn:outgoing>SequenceFlow_1hi6yod</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1hi6yod" sourceRef="StartEvent_0fjrq1j" targetRef="ServiceTask_0ycz94l" />
+    <bpmn:serviceTask id="ServiceTask_0b3ugff" name="Генерим id-сессии">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=token/login&params={%22token%22:%22\" + token+\"%22}\""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0h9rdcs</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1b6frbz</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1b6frbz" sourceRef="ServiceTask_0b3ugff" targetRef="ServiceTask_15nvgze" />
+    <bpmn:serviceTask id="ServiceTask_0ebti11" name="задание токена">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="token" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"9ba164fbf5e900b99b3a0e5e6d1442d71E4F446565C9411FB20A5DB94E5981CA54C1F722\""}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_11aez1g</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0h9rdcs</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0h9rdcs" sourceRef="ServiceTask_0ebti11" targetRef="ServiceTask_0b3ugff" />
+    <bpmn:serviceTask id="ServiceTask_15nvgze" name="сохраняем eid">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="eid" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"resp_body[\"eid\"]"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1b6frbz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0peugx6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0peugx6" sourceRef="ServiceTask_15nvgze" targetRef="ServiceTask_0ab8hhe" />
+    <bpmn:serviceTask id="ServiceTask_0ab8hhe" name="Получение системных id">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_resource%22,%22propType%22:%22propitemname%22,%22propName%22:%22reporttemplates%22,%22propValueMask%22:%22Список%20поездок%22,%22sortType%22:%22sys_name%22},%22force%22:1,%22flags%22:8193,%22from%22:0,%22to%22:0}&sid=\" + eid\n"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0peugx6</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1s7uyxt</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1s7uyxt" sourceRef="ServiceTask_0ab8hhe" targetRef="ServiceTask_0g2vnao" />
+    <bpmn:serviceTask id="ServiceTask_0g2vnao" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="resId" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"resp_body[\"items\"][0][\"id\"]"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="tempId" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"2\""}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1s7uyxt</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_15hn5z5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_1bbphqe" name="Выполнение отчёта">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=report/exec_report&params={%22reportResourceId%22:\" + resId + \",%22reportTemplateId%22:\" + tempId + \",%22reportObjectId%22:\" + \n car +\",%22reportObjectSecId%22:0,%22interval%22:{%22flags%22:0,%22from%22:\" + start_date + \",%22to%22:\" + end_date + \"},%22remoteExec%22:1}&sid=\" + eid"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">text</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_02l2d6m</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16a6i60</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_15hn5z5" sourceRef="ServiceTask_0g2vnao" targetRef="ServiceTask_00p2uqi" />
+    <bpmn:serviceTask id="ServiceTask_1q71ul2" name="Проверка выполнения">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=report/get_report_status&params={}&sid=\" + eid"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">text</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_16a6i60</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_08zyinv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_08zyinv" sourceRef="ServiceTask_1q71ul2" targetRef="ExclusiveGateway_1rp19x5" />
+    <bpmn:sequenceFlow id="SequenceFlow_16a6i60" sourceRef="ServiceTask_1bbphqe" targetRef="ServiceTask_1q71ul2" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1rp19x5" name="Условие (шлюз «ИЛИ»)" default="SequenceFlow_0yp2b5d">
+      <bpmn:extensionElements>
+        <camunda:connector />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_08zyinv</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_18oihv7</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0yp2b5d</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_1rr2o1s" name="Конец процесса">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId></camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1xg2lqo</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_18oihv7" sourceRef="ExclusiveGateway_1rp19x5" targetRef="ServiceTask_1dke70f">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"resp_body[\"status\"] = \"4\""}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="ServiceTask_1dke70f" name="Получение результата отчёта">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=report/apply_report_result&params={}&sid=\" + eid\n"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_18oihv7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0hrutbk</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_0ycz94l" name="Получение дат в секундах">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="start_date" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"(parseInt(Date.now() / 1000) - (24 * 3600)).toString()"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="end_date" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"parseInt(Date.now() / 1000).toString()"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1hi6yod</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_11aez1g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_11aez1g" sourceRef="ServiceTask_0ycz94l" targetRef="ServiceTask_0ebti11" />
+    <bpmn:serviceTask id="ServiceTask_11fleph" name="Получение строк таблицы">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=report/get_result_rows&params={%22tableIndex%22:0,%22indexFrom%22:0,%22indexTo%22:\" + rows + \"}&sid=\" + eid"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="resp_body" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_06vznz0</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_17igdd0</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_17igdd0" sourceRef="ServiceTask_11fleph" targetRef="ServiceTask_1vf4ims" />
+    <bpmn:serviceTask id="ServiceTask_1vf4ims" name="удаление отчёта">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=report/cleanup_result&params={}&sid=\" + eid"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">text</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_17igdd0</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0awdnig</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_1uvyrw9" name="получение количества строк">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="rows" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"resp_body[\"reportResult\"][\"tables\"][0][\"rows\"]"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0hrutbk</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_06vznz0</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_06vznz0" sourceRef="ServiceTask_1uvyrw9" targetRef="ServiceTask_11fleph" />
+    <bpmn:sequenceFlow id="SequenceFlow_0hrutbk" sourceRef="ServiceTask_1dke70f" targetRef="ServiceTask_1uvyrw9" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_04n37ry" name="цикл перебора машин" default="SequenceFlow_1tehlxi">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector />
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1ys6idy</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0eauz1c</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1tehlxi</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1xg2lqo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1tehlxi" sourceRef="ExclusiveGateway_04n37ry" targetRef="ServiceTask_1ogs0tm">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="ServiceTask_1xliu31" name="прибавление счётчика">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="i" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"i + 1"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0yp2b5d</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_01ys5rl</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ys6idy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1ys6idy" sourceRef="ServiceTask_1xliu31" targetRef="ExclusiveGateway_04n37ry" />
+    <bpmn:sequenceFlow id="SequenceFlow_1xg2lqo" sourceRef="ExclusiveGateway_04n37ry" targetRef="EndEvent_1rr2o1s">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"i >= cars[\"totalItemsCount\"]"}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="ServiceTask_00p2uqi" name="получение id машин">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>webRequest</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="method">
+            <camunda:list>
+              <camunda:value type="const">GET</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="query">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"\"https://monitoring.getgps.pro/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22sortType%22:%22sys_name%22, %22propName%22:%22rel_creation_time%22, %22propValueMask%22:%22>=0%22},%22force%22:1,%22flags%22:1,%22from%22:0,%22to%22:0}&sid=\" + eid\n"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="params">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="type">
+            <camunda:list>
+              <camunda:value type="const">application/json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="headers">
+            <camunda:list />
+          </camunda:inputParameter>
+          <camunda:inputParameter name="auth">
+            <camunda:list>
+              <camunda:value type="const">noauth</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="login">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="password">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="async">
+            <camunda:list>
+              <camunda:value type="const">sync</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="output_format">
+            <camunda:list>
+              <camunda:value type="const">json</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="resp_code" configName="output_status">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_status"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="cars" configName="output_body">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output_body"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_15hn5z5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_09b2s6q</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_1exhzt3" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="i" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"0"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_09b2s6q</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0eauz1c</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_09b2s6q" sourceRef="ServiceTask_00p2uqi" targetRef="ServiceTask_1exhzt3" />
+    <bpmn:sequenceFlow id="SequenceFlow_0eauz1c" sourceRef="ServiceTask_1exhzt3" targetRef="ExclusiveGateway_04n37ry" />
+    <bpmn:serviceTask id="ServiceTask_1ogs0tm" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="car" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"cars[\"items\"][i][\"id\"]"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1tehlxi</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_02l2d6m</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_02l2d6m" sourceRef="ServiceTask_1ogs0tm" targetRef="ServiceTask_1bbphqe" />
+    <bpmn:sequenceFlow id="SequenceFlow_0yp2b5d" sourceRef="ExclusiveGateway_1rp19x5" targetRef="ServiceTask_1xliu31" />
+    <bpmn:serviceTask id="ServiceTask_0n7tonc" name="Найти записи">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>bpiumFindRecords</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="catalogFormat">
+            <camunda:list>
+              <camunda:value type="const">catalog</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"49"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogIdFromVar">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="viewId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"0"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filtersFormat">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filters">
+            <camunda:map>
+              <camunda:entry key="2">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"Date(resp_body[j][\"c\"][0][\"t\"])"}]]></camunda:script>
+              </camunda:entry>
+              <camunda:entry key="21">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"car_rec[0]"}]]></camunda:script>
+              </camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filtersJson">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="sortField">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"const","value":"id"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="sortType">
+            <camunda:list>
+              <camunda:value type="const">1</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="fieldsFormat">
+            <camunda:list>
+              <camunda:value type="const">all</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="fieldsSpecified">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="limit">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="offset">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="rec" configName="output">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_04ioxjo</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_11hy0x9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_1mksp8x" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="j" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"0"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0awdnig</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1juil67</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0awdnig" sourceRef="ServiceTask_1vf4ims" targetRef="ServiceTask_1mksp8x" />
+    <bpmn:sequenceFlow id="SequenceFlow_1juil67" sourceRef="ServiceTask_1mksp8x" targetRef="ExclusiveGateway_1ck7tkv" />
+    <bpmn:serviceTask id="ServiceTask_0a9yb4j" name="Изменить запись">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>bpiumEdit</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="catalogFormat">
+            <camunda:list>
+              <camunda:value type="const">catalog</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"49"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogIdFromVar">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="recordId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"rec[0][\"id\"]"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="format">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="values1">
+            <camunda:map>
+              <camunda:entry key="3">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"sr"}]]></camunda:script>
+              </camunda:entry>
+              <camunda:entry key="3">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"er"}]]></camunda:script>
+              </camunda:entry>
+              <camunda:entry key="5">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"er - sr"}]]></camunda:script>
+              </camunda:entry>
+              <camunda:entry key="7">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"st"}]]></camunda:script>
+              </camunda:entry>
+              <camunda:entry key="8">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"et"}]]></camunda:script>
+              </camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="values2">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1d9idcb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_05eoo9z</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1ck7tkv" name="Условие (шлюз «ИЛИ»)" default="SequenceFlow_0omyo6g">
+      <bpmn:extensionElements>
+        <camunda:connector />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1juil67</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1tnczwf</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_01ys5rl</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0omyo6g</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="ServiceTask_1ogqi8h" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="j" configName="vars">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"j + 1"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_05eoo9z</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_004olq9</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1udgqd5</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0sz4tjn</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1tnczwf</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_05eoo9z" sourceRef="ServiceTask_0a9yb4j" targetRef="ServiceTask_1ogqi8h" />
+    <bpmn:sequenceFlow id="SequenceFlow_1tnczwf" sourceRef="ServiceTask_1ogqi8h" targetRef="ExclusiveGateway_1ck7tkv" />
+    <bpmn:sequenceFlow id="SequenceFlow_01ys5rl" sourceRef="ExclusiveGateway_1ck7tkv" targetRef="ServiceTask_1xliu31">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"j >= rows"}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0omyo6g" sourceRef="ExclusiveGateway_1ck7tkv" targetRef="ExclusiveGateway_1dnlbhv" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1dnlbhv" name="Условие (шлюз «ИЛИ»)" default="SequenceFlow_004olq9">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector />
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0omyo6g</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0s8et4r</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_004olq9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0s8et4r" sourceRef="ExclusiveGateway_1dnlbhv" targetRef="ServiceTask_0tglagb">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"resp_body[j]"}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_004olq9" sourceRef="ExclusiveGateway_1dnlbhv" targetRef="ServiceTask_1ogqi8h" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0xkr2f9" name="Условие (шлюз «ИЛИ»)" default="SequenceFlow_1udgqd5">
+      <bpmn:extensionElements>
+        <camunda:connector />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_11hy0x9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1udgqd5</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_12cgi97</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1udgqd5" sourceRef="ExclusiveGateway_0xkr2f9" targetRef="ServiceTask_1ogqi8h" />
+    <bpmn:sequenceFlow id="SequenceFlow_12cgi97" sourceRef="ExclusiveGateway_0xkr2f9" targetRef="ServiceTask_0ryqaat">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"rec"}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_11hy0x9" sourceRef="ServiceTask_0n7tonc" targetRef="ExclusiveGateway_0xkr2f9" />
+    <bpmn:serviceTask id="ServiceTask_0tglagb" name="Найти машину">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>bpiumFindRecords</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="catalogFormat">
+            <camunda:list>
+              <camunda:value type="const">catalog</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"17"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="catalogIdFromVar">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="viewId">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"0"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filtersFormat">
+            <camunda:list>
+              <camunda:value type="const">keyvalue</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filters">
+            <camunda:map>
+              <camunda:entry key="117">
+                <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"car"}]]></camunda:script>
+              </camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="filtersJson">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="sortField">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"const","value":"id"}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="sortType">
+            <camunda:list>
+              <camunda:value type="const">1</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="fieldsFormat">
+            <camunda:list>
+              <camunda:value type="const">all</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="fieldsSpecified">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="limit">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="offset">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":""}]]></camunda:script>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="car_rec" configName="output">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"outputResult","value":"output"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0s8et4r</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1jk9pwv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0hoo4u8" name="Условие (шлюз «ИЛИ»)" default="SequenceFlow_0sz4tjn">
+      <bpmn:extensionElements>
+        <camunda:connector />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1jk9pwv</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0sz4tjn</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_04ioxjo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0sz4tjn" sourceRef="ExclusiveGateway_0hoo4u8" targetRef="ServiceTask_1ogqi8h" />
+    <bpmn:sequenceFlow id="SequenceFlow_04ioxjo" sourceRef="ExclusiveGateway_0hoo4u8" targetRef="ServiceTask_0n7tonc">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:inputOutput />
+      </bpmn:extensionElements>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="JavaScript"><![CDATA[{"type":"script","value":"car_rec"}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1jk9pwv" sourceRef="ServiceTask_0tglagb" targetRef="ExclusiveGateway_0hoo4u8" />
+    <bpmn:serviceTask id="ServiceTask_0ryqaat" name="Назначение переменных">
+      <bpmn:documentation />
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:connectorId>setvar</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="sr">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"parseInt(resp_body[j][\"c\"][2].slice(0, -3))"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="er">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"parseInt(resp_body[j][\"c\"][3].slice(0, -3))"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="st">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"parseInt(resp_body[j][\"c\"][5].slice(0, -2))"}]]></camunda:script>
+          </camunda:outputParameter>
+          <camunda:outputParameter name="et">
+            <camunda:script scriptFormat="JavaScript"><![CDATA[{"type":"script","value":"parseInt(resp_body[j][\"c\"][6].slice(0, -2))"}]]></camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_12cgi97</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1d9idcb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1d9idcb" sourceRef="ServiceTask_0ryqaat" targetRef="ServiceTask_0a9yb4j" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_0fjrq1j_di" bpmnElement="StartEvent_0fjrq1j">
+        <dc:Bounds x="-772" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-785" y="310" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1hi6yod_di" bpmnElement="SequenceFlow_1hi6yod">
+        <di:waypoint xsi:type="dc:Point" x="-708" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="-609" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-703.5" y="253.5" width="90" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0b3ugff_di" bpmnElement="ServiceTask_0b3ugff">
+        <dc:Bounds x="-311" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-307" y="311" width="59" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1b6frbz_di" bpmnElement="SequenceFlow_1b6frbz">
+        <di:waypoint xsi:type="dc:Point" x="-247" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="-179" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-258" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0ebti11_di" bpmnElement="ServiceTask_0ebti11">
+        <dc:Bounds x="-471" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-479" y="305" width="80" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0h9rdcs_di" bpmnElement="SequenceFlow_0h9rdcs">
+        <di:waypoint xsi:type="dc:Point" x="-407" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="-311" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-404" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_15nvgze_di" bpmnElement="ServiceTask_15nvgze">
+        <dc:Bounds x="-179" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-183" y="305" width="74" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0peugx6_di" bpmnElement="SequenceFlow_0peugx6">
+        <di:waypoint xsi:type="dc:Point" x="-115" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="-54" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-129.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0ab8hhe_di" bpmnElement="ServiceTask_0ab8hhe">
+        <dc:Bounds x="-54" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-53" y="311" width="68" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1s7uyxt_di" bpmnElement="SequenceFlow_1s7uyxt">
+        <di:waypoint xsi:type="dc:Point" x="10" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="75" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-2.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0g2vnao_di" bpmnElement="ServiceTask_0g2vnao">
+        <dc:Bounds x="75" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="74" y="305" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1bbphqe_di" bpmnElement="ServiceTask_1bbphqe">
+        <dc:Bounds x="735" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="737" y="311" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_15hn5z5_di" bpmnElement="SequenceFlow_15hn5z5">
+        <di:waypoint xsi:type="dc:Point" x="139" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="203" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="126" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1q71ul2_di" bpmnElement="ServiceTask_1q71ul2">
+        <dc:Bounds x="862" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="865" y="311" width="63" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_08zyinv_di" bpmnElement="SequenceFlow_08zyinv">
+        <di:waypoint xsi:type="dc:Point" x="926" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1043" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="939.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_16a6i60_di" bpmnElement="SequenceFlow_16a6i60">
+        <di:waypoint xsi:type="dc:Point" x="799" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="862" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="785.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1rp19x5_di" bpmnElement="ExclusiveGateway_1rp19x5" isMarkerVisible="true">
+        <dc:Bounds x="1042.9269496544916" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1035" y="305" width="80" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1rr2o1s_di" bpmnElement="EndEvent_1rr2o1s">
+        <dc:Bounds x="2849" y="233" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2840" y="301" width="82" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_18oihv7_di" bpmnElement="SequenceFlow_18oihv7">
+        <di:waypoint xsi:type="dc:Point" x="1107" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1164" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1091" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1dke70f_di" bpmnElement="ServiceTask_1dke70f">
+        <dc:Bounds x="1164" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1169" y="311" width="57" height="36" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0ycz94l_di" bpmnElement="ServiceTask_0ycz94l">
+        <dc:Bounds x="-609" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-619" y="305" width="86" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_11aez1g_di" bpmnElement="SequenceFlow_11aez1g">
+        <di:waypoint xsi:type="dc:Point" x="-545" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="-471" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-553" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_11fleph_di" bpmnElement="ServiceTask_11fleph">
+        <dc:Bounds x="1449" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1438" y="311" width="88" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_17igdd0_di" bpmnElement="SequenceFlow_17igdd0">
+        <di:waypoint xsi:type="dc:Point" x="1513" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1624" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1523.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1vf4ims_di" bpmnElement="ServiceTask_1vf4ims">
+        <dc:Bounds x="1624" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1614" y="311" width="87" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1uvyrw9_di" bpmnElement="ServiceTask_1uvyrw9">
+        <dc:Bounds x="1309.2562962962961" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1298" y="305" width="90" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_06vznz0_di" bpmnElement="SequenceFlow_06vznz0">
+        <di:waypoint xsi:type="dc:Point" x="1373" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1449" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1366" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0hrutbk_di" bpmnElement="SequenceFlow_0hrutbk">
+        <di:waypoint xsi:type="dc:Point" x="1228" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1309" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1268.5" y="254" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_04n37ry_di" bpmnElement="ExclusiveGateway_04n37ry" isMarkerVisible="true">
+        <dc:Bounds x="482.32" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="478" y="305" width="76" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1tehlxi_di" bpmnElement="SequenceFlow_1tehlxi">
+        <di:waypoint xsi:type="dc:Point" x="546" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="614" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="535" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1xliu31_di" bpmnElement="ServiceTask_1xliu31">
+        <dc:Bounds x="482" y="106.35834155972358" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="481" y="168" width="68" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ys6idy_di" bpmnElement="SequenceFlow_1ys6idy">
+        <di:waypoint xsi:type="dc:Point" x="514" y="170" />
+        <di:waypoint xsi:type="dc:Point" x="514" y="243" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="529" y="200.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xg2lqo_di" bpmnElement="SequenceFlow_1xg2lqo">
+        <di:waypoint xsi:type="dc:Point" x="514" y="307" />
+        <di:waypoint xsi:type="dc:Point" x="514" y="662" />
+        <di:waypoint xsi:type="dc:Point" x="2881" y="662" />
+        <di:waypoint xsi:type="dc:Point" x="2881" y="297" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1652.5" y="641" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_00p2uqi_di" bpmnElement="ServiceTask_00p2uqi">
+        <dc:Bounds x="203" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="204" y="311" width="66" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1exhzt3_di" bpmnElement="ServiceTask_1exhzt3">
+        <dc:Bounds x="337" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="336" y="305" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_09b2s6q_di" bpmnElement="SequenceFlow_09b2s6q">
+        <di:waypoint xsi:type="dc:Point" x="267" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="337" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="257" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0eauz1c_di" bpmnElement="SequenceFlow_0eauz1c">
+        <di:waypoint xsi:type="dc:Point" x="401" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="482" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="396.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1ogs0tm_di" bpmnElement="ServiceTask_1ogs0tm">
+        <dc:Bounds x="613.9552631578947" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="613" y="305" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_02l2d6m_di" bpmnElement="SequenceFlow_02l2d6m">
+        <di:waypoint xsi:type="dc:Point" x="678" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="735" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="706.5" y="254" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0yp2b5d_di" bpmnElement="SequenceFlow_0yp2b5d">
+        <di:waypoint xsi:type="dc:Point" x="1075" y="243" />
+        <di:waypoint xsi:type="dc:Point" x="1075" y="138" />
+        <di:waypoint xsi:type="dc:Point" x="546" y="138" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1090" y="184.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0n7tonc_di" bpmnElement="ServiceTask_0n7tonc">
+        <dc:Bounds x="2315" y="247" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2312" y="315" width="70" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1mksp8x_di" bpmnElement="ServiceTask_1mksp8x">
+        <dc:Bounds x="1769" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1768" y="305" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0awdnig_di" bpmnElement="SequenceFlow_0awdnig">
+        <di:waypoint xsi:type="dc:Point" x="1688" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1769" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1683.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1juil67_di" bpmnElement="SequenceFlow_1juil67">
+        <di:waypoint xsi:type="dc:Point" x="1833" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1892" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1817.5" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0a9yb4j_di" bpmnElement="ServiceTask_0a9yb4j">
+        <dc:Bounds x="2722" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2710" y="311" width="88" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1ck7tkv_di" bpmnElement="ExclusiveGateway_1ck7tkv" isMarkerVisible="true">
+        <dc:Bounds x="1891.8933859822312" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1884" y="305" width="80" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1ogqi8h_di" bpmnElement="ServiceTask_1ogqi8h">
+        <dc:Bounds x="1892" y="393" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1891" y="455" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_05eoo9z_di" bpmnElement="SequenceFlow_05eoo9z">
+        <di:waypoint xsi:type="dc:Point" x="2754" y="307" />
+        <di:waypoint xsi:type="dc:Point" x="2754" y="425" />
+        <di:waypoint xsi:type="dc:Point" x="1956" y="425" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2724" y="360" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1tnczwf_di" bpmnElement="SequenceFlow_1tnczwf">
+        <di:waypoint xsi:type="dc:Point" x="1924" y="393" />
+        <di:waypoint xsi:type="dc:Point" x="1924" y="307" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1939" y="344" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_01ys5rl_di" bpmnElement="SequenceFlow_01ys5rl">
+        <di:waypoint xsi:type="dc:Point" x="1924" y="243" />
+        <di:waypoint xsi:type="dc:Point" x="1924" y="138" />
+        <di:waypoint xsi:type="dc:Point" x="546" y="138" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1894" y="185" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0omyo6g_di" bpmnElement="SequenceFlow_0omyo6g">
+        <di:waypoint xsi:type="dc:Point" x="1956" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="1988" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1927" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1dnlbhv_di" bpmnElement="ExclusiveGateway_1dnlbhv" isMarkerVisible="true">
+        <dc:Bounds x="1988.148148148148" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1981" y="305" width="80" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0s8et4r_di" bpmnElement="SequenceFlow_0s8et4r">
+        <di:waypoint xsi:type="dc:Point" x="2052" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="2103" y="276" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2032.5" y="254.5" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_004olq9_di" bpmnElement="SequenceFlow_004olq9">
+        <di:waypoint xsi:type="dc:Point" x="2020" y="307" />
+        <di:waypoint xsi:type="dc:Point" x="2020" y="425" />
+        <di:waypoint xsi:type="dc:Point" x="1956" y="425" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2035" y="360" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0xkr2f9_di" bpmnElement="ExclusiveGateway_0xkr2f9" isMarkerVisible="true">
+        <dc:Bounds x="2476" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2468" y="305" width="80" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1udgqd5_di" bpmnElement="SequenceFlow_1udgqd5">
+        <di:waypoint xsi:type="dc:Point" x="2508" y="307" />
+        <di:waypoint xsi:type="dc:Point" x="2508" y="425" />
+        <di:waypoint xsi:type="dc:Point" x="1956" y="425" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2478" y="360" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_12cgi97_di" bpmnElement="SequenceFlow_12cgi97">
+        <di:waypoint xsi:type="dc:Point" x="2540" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="2594" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2522" y="254" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_11hy0x9_di" bpmnElement="SequenceFlow_11hy0x9">
+        <di:waypoint xsi:type="dc:Point" x="2379" y="279" />
+        <di:waypoint xsi:type="dc:Point" x="2478" y="277" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2383.5" y="257" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0tglagb_di" bpmnElement="ServiceTask_0tglagb">
+        <dc:Bounds x="2103" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2100" y="311" width="75" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0hoo4u8_di" bpmnElement="ExclusiveGateway_0hoo4u8" isMarkerVisible="true">
+        <dc:Bounds x="2208.6574531095757" y="247" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2201" y="309" width="80" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0sz4tjn_di" bpmnElement="SequenceFlow_0sz4tjn">
+        <di:waypoint xsi:type="dc:Point" x="2241" y="311" />
+        <di:waypoint xsi:type="dc:Point" x="2241" y="425" />
+        <di:waypoint xsi:type="dc:Point" x="1956" y="425" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2211" y="362" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_04ioxjo_di" bpmnElement="SequenceFlow_04ioxjo">
+        <di:waypoint xsi:type="dc:Point" x="2273" y="279" />
+        <di:waypoint xsi:type="dc:Point" x="2315" y="279" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2249" y="258" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1jk9pwv_di" bpmnElement="SequenceFlow_1jk9pwv">
+        <di:waypoint xsi:type="dc:Point" x="2167" y="278" />
+        <di:waypoint xsi:type="dc:Point" x="2209" y="278" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2143" y="257" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0ryqaat_di" bpmnElement="ServiceTask_0ryqaat">
+        <dc:Bounds x="2594" y="243" width="64" height="64" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2593" y="305" width="65" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1d9idcb_di" bpmnElement="SequenceFlow_1d9idcb">
+        <di:waypoint xsi:type="dc:Point" x="2658" y="275" />
+        <di:waypoint xsi:type="dc:Point" x="2722" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2690" y="254" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
